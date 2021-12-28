@@ -1,0 +1,353 @@
+\documentclass[a4paper,onecolumn]{IEEETran}
+\usepackage{bloques}
+\usepackage{verbatim}
+\oddsidemargin=-1.5cm
+
+
+\title{The Bloques Package}
+\author{Alejandro Garces Ruiz \\ alejandrogarces@gmail.com}
+
+\begin{document}
+
+\maketitle
+
+\section{Functions}
+
+
+The \textbf{bloques} package is a very simple set of commands based on \textbf{tikz} to generate control blocks.  The only packages required in the definition are:
+
+\begin{verbatim}
+	\usepackage{tikz}
+	\usepackage{bloques}
+\end{verbatim}
+
+The package is very efficient for sequential blocks as follow:
+
+\begin{itemize}
+\item \verb|\bStart{TEXT}| a start node without box
+\item \verb|\bPlusDown{TEXT}| a plus mixer with a down input(TEXT) 
+\item \verb|\bPlusUp{TEXT}|   a plus mixer with a up input(TEXT) 
+\item \verb|\bMinusDown{TEXT}| a minus mixer with a down input(TEXT) 
+\item \verb|\bMinusUp{TEXT}| a minus mixer with a up input(TEXT) 
+\item \verb|\bEnd{TEXT}| a start node without box
+\item \verb|\bGain[mark]{TEXT}| a gain with box and a input mark before it
+\item \verb|\bGainPlus{TEXT1}{TEXT2}| a gain(TEXT2) and plus mixer with input (TEXT1)
+\item \verb|\bGainMinus{TEXT1}{TEXT2}| a gain(TEXT2) and minus mixer with input (TEXT1)
+\item \verb|\bPlus{NODENAME}| a plus mixer with name (NODENAME) for feed forward
+\item \verb|\bInter{TEXT}| a inter node with text (TEXT1) for feed forward
+\item \verb|\bMarkNodeInter{NODENAME}| a inter node with name (NODENAME)  for feed forward
+\item \verb|\bFeedForward{TEXT}{NODE1}{NODE2}| a feed forward with gain (TEXT) from node (NODE1) to node (NODE2)
+\end{itemize}
+
+For Feedback controls, it is required to mark the nodes with the following functions:
+
+\begin{itemize}
+\item \verb|\bMinusF{NODENAME}| a minus mixer with name (NODENAME)  for feed backward
+\item \verb|\bPlusF{NODENAME}| a plus mixer with name (NODENAME)  for feed backward
+\item \verb|\bFeedBack{TEXT}{NODENAME}| a feed backward with gain(TEXT) to a mixer with name (NODENAME)
+\item \verb|\bCrossGain{TEXT}{NODENAME1}{NODENAME2}| a cross gain with gain(TEXT) from node (NODENAME1) to node (NODENAME2)
+\item \verb|\bNewStart{TEXT}{POSITION}| a new start node with text(TEXT) at (POSITION)
+\item \verb|\bMarkNode{NODENAME}| add a mark node with name {NODENAME} for the previous node
+\item \verb|\bMarkNodeUp{NODENAME}| add a mark node with name {NODENAME} above ydistance of the previous node
+\item \verb|\bMarkNodeDown{NODENAME}| add a mark node with name {NODENAME} below ydistance of the previous node
+\end{itemize}
+
+
+To change colors and distances, the following functions are available
+
+\begin{verbatim}
+	\bShadow{NUMBER}  	% default = 0，shadow of node
+	\bColorB{COLOR}   	% default = white，back color of node
+	\bColorT{COLOR}		% default = black，text color of node
+	\ydistance{NUMBER}	% default = 1.2 cm，offset distance of y direction
+\end{verbatim}
+
+
+\newpage
+
+\section{examples}
+
+
+%Simple Control diagram
+\begin{figure}[h!]
+\begin{tikzpicture}	
+	\bStart{$X_{ref}$}
+	\bMinusDown{$X$}
+	\bGain{$k_{p}$}	
+	\bPlusUp{$Y$}
+	\bGainPlus{$U$}{$\omega L$}
+	\bEnd{$V_{x}$}
+	\node[right of = NODO1, text width=8.5cm, node distance = 6.0cm, drop shadow={opacity=1}, fill=blue!20, rounded corners] (C4)
+	{
+	\begin{verbatim}	
+	\begin{figure}
+	\begin{tikzpicture}	
+	   \bStart{$X_{ref}$}
+	   \bMinusDown{$X$}
+	   \bGain{$k_{p}$}	
+	   \bPlusUp{$Y$}
+	   \bGainPlus{$U$}{$\omega L$}
+	   \bEnd{$V_{x}$}	
+	\end{tikzpicture}
+	\end{figure}
+	\end{verbatim}
+	};
+\end{tikzpicture}
+\caption{Simple Control diagram}
+\end{figure}
+
+
+
+%Control diagram with shadow
+\begin{figure}[h!]
+\begin{tikzpicture}	
+	\bShadow
+	\bStart{$X_{ref}$}
+	\bMinusDown{$X$}
+	\bGain{$k_{p}$}	
+	\bPlusUp{$Y$}
+	\bGainPlus{$U$}{$\omega L$}
+	\bEnd{$V_{x}$}
+	\node[right of = NODO1, text width=8.5cm, node distance = 6.0cm, drop shadow={opacity=1}, fill=blue!20, rounded corners] (C4)
+	{
+	\begin{verbatim}	
+	\begin{figure}
+	\begin{tikzpicture}	
+	 \bShadow
+	    \bStart{$X_{ref}$}
+	    \bMinusDown{$X$}
+	    \bGain{$k_{p}$}	
+	    \bPlusUp{$Y$}
+	    \bGainPlus{$U$}{$\omega L$}
+	    \bEnd{$V_{x}$}	
+	\end{tikzpicture}
+	\end{figure}
+	\end{verbatim}
+	};
+\end{tikzpicture}
+\caption{Control diagram with shadow}
+\end{figure}
+
+
+
+%Control diagram with shadow and different colors
+\begin{figure}[h!]
+\begin{tikzpicture}[thick]	
+ \draw[fill=blue!20, draw=white]  (-0.5,-3) rectangle (8,2);
+ \draw[fill=green!20, dashed,thick] (4,-2) rectangle (7,0.5);
+  \bShadow
+  \bColorB{blue!80!green!50}
+	\bColorT{yellow}
+	\bColorL{white}
+	\bStart{$X_{ref}$}
+	\bMinusDown{$X$}
+	\bGain{$k_{p}$}	
+	\bColorB{blue!30!green!80}
+	\bPlusUp{$Y$}
+	\bGainPlus{$U$}{$\omega L$}
+	\bEnd{$V_{x}$}
+	\node[right of = NODO1, text width=8.5cm, node distance = 6.0cm, drop shadow={opacity=1}, fill=blue!20, rounded corners] (C4)
+	{
+	\begin{verbatim}	
+	\begin{figure}
+	\begin{tikzpicture}[thick]
+			\draw[fill=blue!20, draw=white]
+			     (-0.5,-3) rectangle (8,2);
+	    \draw[fill=green!20, dashed]
+	         (4,-2) rectangle (7,0.5);
+	 \bShadow
+	 \bColorB{blue!50!green!45}
+	 \bColorT{yellow}
+	 \bColorL{white}
+	    \bStart{$X_{ref}$}
+	    \bMinusDown{$X$}
+	    \bGain{$k_{p}$}	
+	 \bColorB{blue!30!green!80}
+	    \bPlusUp{$Y$}
+	    \bGainPlus{$U$}{$\omega L$}
+	    \bEnd{$V_{x}$}	
+	\end{tikzpicture}
+	\end{figure}
+	\end{verbatim}
+	};
+\end{tikzpicture}
+\caption{Control diagram with shadow and different colors}
+\end{figure}
+
+
+
+%Control diagram with feedback
+\begin{figure}[h!]
+	\begin{tikzpicture}
+		\bColorB{blue!70!green!20}		
+		\bStart{$X_{r}$}
+		\bMinusF{NODEX}
+		\bGain{$k_{p}+\frac{k_{i}}{S}$}
+		\bFeedBack{$k_{x}$}{NODEX}
+		\bEnd{$X$}
+	\node[right of = NODO1, text width=8.5cm, node distance = 6.0cm, drop shadow={opacity=1}, fill=blue!20, rounded corners] (C4)
+	{
+	\begin{verbatim}	
+        \begin{figure}
+        	\begin{tikzpicture}
+        		   \bColorB{blue!70!green!20}		
+        		   \bStart{$X_{r}$}
+        		\bMinusF{NODEX}
+        		   \bGain{$k_{p}+\frac{k_{i}}{S}$}
+        		\bFeedBack{$k_{x}$}{NODEX}
+        		   \bEnd{$X$}		
+        	\end{tikzpicture}
+        \end{figure}	
+	\end{verbatim}		
+	}	;
+	\end{tikzpicture}
+	\caption{Control diagram with feedback}
+\end{figure}
+
+
+
+%Change the ydistance
+\begin{figure}[h!]
+	\begin{tikzpicture}
+		\bColorB{blue!30!green!50}
+		\bColorT{white}
+		\bStart{$X_{r}$}
+		\bMinusF{NODEX}
+		\bGain{$k_{p}+\frac{k_{i}}{S}$}
+		\bGain{$K_{2}$}
+		\bPlusDown{$Y$}
+		\ydistance{2.5cm}				
+		\bFeedBack{$k_{x}$}{NODEX}
+		\bEnd{$X$}
+\node[right of = NODO1, text width=8.5cm, node distance = 6.0cm, drop shadow={opacity=1}, fill=blue!20, rounded corners] (C4)
+	{
+	\begin{verbatim}	
+        \begin{figure}
+        	\begin{tikzpicture}
+        	    \bColorB{blue!30!green!50}
+        	    \bColorT{white}
+        	    \bStart{$X_{r}$}
+        	    \bMinusF{NODEX}
+        	    \bGain{$k_{p}+\frac{k_{i}}{S}$}
+        	    \bGain{$K_{2}$}
+        	    \bPlusDown{$Y$}
+        		\ydistance{2.5cm}				
+        	    \bFeedBack{$k_{x}$}{NODEX}
+        	    \bEnd{$X$}
+        	\end{tikzpicture}
+        \end{figure}
+	\end{verbatim}		
+	}	;		
+	\end{tikzpicture}
+	\caption{Change the ydistance}
+\end{figure}
+
+
+%More compex controls
+\begin{figure}[h!]
+	\begin{tikzpicture}
+		\bStart{$I_{d(ref)}=0$}
+		\bMinusDown{$I_{d}$}
+		\bGain{PI1}
+		\bPlusF{NODET}
+		\bEnd{$V_{d}$}
+		\bNewStart{$\omega_{ref}$}{(-2,-4)}
+		\bMinusDown{$\omega_{s}$}
+		\bGain{PI2}
+		\bMinusUp{$I_{q}$}
+		\bMarkNodeUp{NODEX}
+		\bGain{PI3}
+		\bEnd{$V_{q}$}		
+		\bCrossGain{$\omega L$} {NODEX} {NODET}
+		\node[right of = NODO1, text width=8.5cm, node distance = 6.0cm, drop shadow={opacity=1}, fill=blue!20, rounded corners] (C4)
+	{
+	\begin{verbatim}	
+        \begin{figure}
+        	\begin{tikzpicture}
+        		\bStart{$I_{d(ref)}=0$}
+        		   \bMinusDown{$I_{d}$}
+        		   \bGain{PI1}
+        		   \bPlusF{NODET}
+        		   \bEnd{$V_{d}$}
+        		\bNewStart{$\omega_{ref}$}{(-2,-4)}
+        		   \bMinusDown{$\omega_{s}$}
+        		   \bGain{PI2}
+        		   \bMinusUp{$I_{q}$}
+        		\bMarkNodeUp{NODEX}
+        		   \bGain{PI3}
+        		   \bEnd{$V_{q}$}		
+        		\bCrossGain{$\omega L$} {NODEX} {NODET}
+        	\end{tikzpicture}
+        \end{figure}		
+	\end{verbatim}
+	};
+	\end{tikzpicture}
+	\caption{More compex controls}
+\end{figure}
+
+
+
+
+%add example 2021-12-28
+%A system state variables diagram
+\begin{figure}[h!]
+\hspace{-0.5cm}
+	\begin{tikzpicture}
+        \bColorB{blue!70!green!20}
+        \bStart{$u$}
+        \bInter{}
+        \bMarkNodeInter{NODEU}
+        \bGain{$B$}
+        \bMinusF{NODEX}
+        \bGain[$\dot{x}$]{$\int$}
+        \bFeedBack{A}{NODEX}
+        \bGain[$x$]{$C$}
+        \bPlus{NODEY}
+        \bFeedForward{$D$}{NODEU}{NODEY}
+        \bEnd{$y$}
+		\node[right of = NODO1, text width=8cm, node distance = 4.3cm, drop shadow={opacity=1}, fill=blue!20, rounded corners] (C4)
+	{
+	\begin{verbatim}
+    \begin{figure}
+    	\begin{tikzpicture}
+            \bColorB{blue!70!green!20}
+            \bStart{$u$}
+            \bInter{}
+            \bMarkNodeInter{NODEU}
+            \bGain{$B$}
+            \bMinusF{NODEX}
+            \bGain[$\dot{x}$]{$\int$}
+            \bFeedBack{A}{NODEX}
+            \bGain[$x$]{$C$}
+            \bPlus{NODEY}
+            \bFeedForward{$D$}{NODEU}{NODEY}
+            \bEnd{$y$}
+    	\end{tikzpicture}
+    \end{figure}
+	\end{verbatim}
+	};
+	\end{tikzpicture}
+	\caption{A system state variables diagram}
+\end{figure}
+
+
+\clearpage
+
+\section{history}
+
+\begin{itemize}
+  \item  update on 2021-12-28, by hu zhenzhen (hzzmail@163.com)
+    \begin{itemize}
+    \item add new some commands for feed forward drawing
+    \item add more instructions of cmds in the doc
+    \end{itemize}
+
+  \item v1.0 in 2005, uses TikZ to provide commands for generating control diagrams (specially in power electronics)
+\end{itemize}
+
+
+\end{document}
+
+
+
+
