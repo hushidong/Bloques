@@ -8,7 +8,7 @@ author:  Alejandro Garces(alejandrogarces@gmail.com)
   
 updated 2021-12-28 by hu zhenzhen (hzzmail@163.com)
        
-    * add new some commands for feed forward drawing 
+    * add more commands for feed and branch drawing
 	* add more config api for linestyle,arrow style, xdis,ydis
     * add more instructions of cmds in the doc
  

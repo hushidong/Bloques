@@ -30,8 +30,12 @@ The package is very efficient for sequential blocks as follow:
 \item \verb|\bEnd{TEXT}| a start node without box
 \item \verb|\bGainPlus{TEXT1}{TEXT2}| a gain(TEXT2) and plus mixer with input (TEXT1)
 \item \verb|\bGainMinus{TEXT1}{TEXT2}| a gain(TEXT2) and minus mixer with input (TEXT1)
-\item \verb|\bPlus[mark]{NODENAME}| a plus mixer with name (NODENAME) and a input mark before it for feed forward
-\item \verb|\bMinus[mark]{NODENAME}| a plus mixer with name (NODENAME) and a input mark before it for feed forward
+\item \verb|\bPlus[mark]{NODENAME}| a L-U plus mixer with name (NODENAME) and a input mark before it for feed
+\item \verb|\bMinus[mark]{NODENAME}| a L-U minus mixer with name (NODENAME) and a input mark before it for feed
+\item \verb|\bPlusLR[mark]{NODENAME}| a L-R plus mixer with name (NODENAME) and a input mark before it for feed
+\item \verb|\bMinusLR[mark]{NODENAME}| a L-R minus mixer with name (NODENAME) and a input mark before it for feed
+\item \verb|\bPlusF[mark]{NODENAME}| a L-D plus mixer with name (NODENAME)  for feed backward and a input mark before it
+\item \verb|\bMinusF[mark]{NODENAME}| a L-D minus mixer with name (NODENAME)  for feed backward and a input mark before it
 \item \verb|\bPlusDown{TEXT}| a plus mixer with a down input(TEXT)
 \item \verb|\bPlusUp{TEXT}|   a plus mixer with a up input(TEXT)
 \item \verb|\bMinusDown{TEXT}| a minus mixer with a down input(TEXT)
@@ -45,7 +49,7 @@ IF want to start a new sequential blocks use these command:
 \item \verb|\bMarkNode{NODENAME}| add a mark node with name {NODENAME} for the previous node
 \item \verb|\bMarkNodeUp{NODENAME}| add a mark node with name {NODENAME} above ydistance of the previous node
 \item \verb|\bMarkNodeDown{NODENAME}| add a mark node with name {NODENAME} below ydistance of the previous node
-\item \verb|\bInter{TEXT}| a no sep-space inter node with text (TEXT1) for feed forward
+\item \verb|\bInter[mark]{TEXT}| a no sep-space inter node with text (TEXT1) and a previous (mark) for feed forward
 \item \verb|\bMarkNodeInter{NODENAME}| a no sep-space inter node with name (NODENAME)  for feed forward
 \item \verb|\bNewInter{TEXT}{POSITION}| a new inter node with text(TEXT) at (POSITION) like new start node but with no sep-space
 \item \verb|\bFeedForward{TEXT}{NODE1}{NODE2}| a feed forward with gain (TEXT) from node (NODE1) to node (NODE2)
@@ -60,10 +64,10 @@ IF want to start a new sequential blocks use these command:
 For Feedback controls, it is required to mark the nodes with the following functions:
 
 \begin{itemize}
-\item \verb|\bMinusF[mark]{NODENAME}| a minus mixer with name (NODENAME)  for feed backward and a input mark before it
-\item \verb|\bPlusF[mark]{NODENAME}| a plus mixer with name (NODENAME)  for feed backward and a input mark before it
-\item \verb|\bFeedBack{TEXT}{NODENAME}| a feed backward with gain(TEXT) to a mixer with name (NODENAME)
-\item \verb|\bFeedBackvhv{TEXT}{NODENAME}| a feed backward with gain(TEXT) to a mixer with name (NODENAME) and link line start from the south anchor of the previous node
+\item \verb|\bFeedBack{TEXT}{NODENAME}| a feed backward with gain(TEXT) at below left to a mixer with name (NODENAME)
+\item \verb|\bFeedBackA{TEXT}{NODENAME}| a feed backward with gain(TEXT) at above left to a mixer with name (NODENAME)
+\item \verb|\bFeedBackvhv{TEXT}{NODENAME}| a feed backward with gain(TEXT) at below left to a mixer with name (NODENAME) and link line start from the south anchor of the previous node
+\item \verb|\bFeedBackAvhv{TEXT}{NODENAME}| a feed backward with gain(TEXT) at above left to a mixer with name (NODENAME) and link line start from the north anchor of the previous node
 \end{itemize}
 
 
@@ -86,6 +90,49 @@ To change colors and distances, the following functions are available
 
 \section{examples}
 
+
+\begin{figure}[!htbp]
+\scalebox{0.9}{\begin{tikzpicture}
+        %\bColorB{blue!70!green!20}
+        \bLineL{double}
+        \bArrow{-Latex[open]}
+        \xdistance{1.4cm}
+        \bStart{$v$}
+        \bMinusF{Nodev}
+        \bInter{}
+        \bMarkNodeInter{Nodevf}
+        \bGain[$u$]{$B$}
+        \bPlusF{Nodeu}
+        \bGain[$\dot{x}$]{$\int$}
+        \bFeedBack{$A$}{Nodeu}
+        \bGain[$x$]{$C$}
+        \bInter{}
+        \bInter[$y$]{}
+        \bMarkNodeInter{Nodey}
+        \bEnd{}
+        %new branch
+        \bNewInter{}{(2.8cm,-2.4cm)}
+        \bMarkNodeInter{Nodeun}
+        \xdistance{1.2cm}
+        \bGain{$B$}
+        \bMinus{Nodeuh}
+        \bPlusF{Nodexh}
+        \bGain[$\dot{\hat{x}}$]{$\int$}
+        \xdistance{1.0cm}
+        \bInter{}
+        \bFeedBackvhv{$A$}{Nodexh}
+        \ydistance{2.4cm}
+        \bFeedBackvhv{$K$}{Nodev}
+        \restoreydis
+        \bGain[$\hat{x}$]{$C$}
+        \bMinusLR[$\hat{y}$]{Nodeyh}
+        \bFeedBackAvhv{$G$}{Nodeuh}
+        \bLinkvh{Nodey}{Nodeyh}
+        \bLinkhv{Nodevf}{Nodeun}
+    \end{tikzpicture}}
+    \caption{a feed back system with full dimension observer}
+\end{figure}
+
 %a state observer of a system
 \begin{figure}[!htbp]
 \scalebox{1.0}{\begin{tikzpicture}
@@ -96,7 +143,7 @@ To change colors and distances, the following functions are available
         \bInter{}
         \bMarkNodeInter{NODEU}
         \bGain{$B$}
-        \bMinusF{NODEX}
+        \bPlusF{NODEX}
         \bGain[$\dot{x}$]{$\int$}
         \bFeedBack{A}{NODEX}
         \bGain[$x$]{$C$}
@@ -109,7 +156,7 @@ To change colors and distances, the following functions are available
         \bGain{$B$}
         \xdistance{1cm}
         \bMinusF{NODEXa}
-        \bMinusF{NODEXb}
+        \bPlusF{NODEXb}
         \bGain[$\dot{\hat{x}}$]{$\int$}
         \bFeedBack{A}{NODEXb}
         \restorexdis
@@ -135,7 +182,7 @@ To change colors and distances, the following functions are available
         \bInter{}
         \bMarkNodeInter{NODEU}
         \bGain{$B$}
-        \bMinusF{NODEX}
+        \bPlusF{NODEX}
         \bGain[$\dot{x}$]{$\int$}
         \bFeedBack{A}{NODEX}
         \bGain[$x$]{$C$}

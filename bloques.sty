@@ -104,15 +104,15 @@
 }
 
 \newcommand{\bEnd}[1]{
-\node [right of = NODO1, node distance = 1.7cm] (F) {\tamano{#1}};
+\node [right of = NODO1, node distance =\xdistancia] (F) {\tamano{#1}};
 \draw [\barrowstyle,\colorlinea,\blinkstyle] (NODO1) -- (F);
 \node  at (F) [anchor = west] (NODO1) {};
 }
 
 
-\newcommand{\bInter}[1]{
-\coordinate (NODO2) at ($(NODO1)+(\xdistancia,0)$) node[above] at (NODO2) {\color{\colortexto}\tamano{#1}};		
-\draw [\colorlinea,\blinkstyle] (NODO1)--(NODO2);
+\newcommand{\bInter}[2][]{
+\coordinate (NODO2) at ($(NODO1)+(\xdistancia,0)$) node[above] at (NODO2) {\color{\colortexto}\tamano{#2}};		
+\draw [\colorlinea,\blinkstyle] (NODO1)--node[above] {\tamano{#1}} (NODO2);
 \node[inner sep=0pt,minimum size=0pt]  at (NODO2.center) [anchor = center] (NODO1) {};%
 }
 
@@ -199,6 +199,16 @@ anchor = west] (NODOG) {\color{\colortexto}\tamano{#1}};
 \node  at (#2) [minimum size=1.5em] (NODO1) {};	%anchor = west
 }
 
+\newcommand{\bPlusLR}[2][]{
+\node [draw=\colorlinea, circle,minimum size=1.5em, right of=NODO1, node distance= \xdistancia,\ancholinea, fill=\colorfondo,
+       drop shadow={opacity=\sombra}] (#2) {};
+\node [draw=gray!50, cross out, minimum size=1.0em, right of=NODO1, node distance= \xdistancia, thin] {};	
+\node [left of = #2, node distance = 0.45em] () { \color{\colortexto}\tiny{$+$}};
+\node [right of = #2, node distance = 0.45em] () { \color{\colortexto}\tiny{$+$}};
+\draw [\barrowstyle, \colorlinea,\blinkstyle] (NODO1) -- (#2);	
+\node  at (#2) [minimum size=1.5em] (NODO1) {};	%anchor = west
+}
+
 \newcommand{\bMinus}[2][]{
 \node [draw=\colorlinea, circle,minimum size=1.5em, right of=NODO1, node distance= \xdistancia,\ancholinea, fill=\colorfondo,
        drop shadow={opacity=\sombra}] (#2) {};
@@ -209,19 +219,48 @@ anchor = west] (NODOG) {\color{\colortexto}\tamano{#1}};
 \node  at (#2) [minimum size=1.5em] (NODO1) {};
 }
 
+\newcommand{\bMinusLR}[2][]{
+\node [draw=\colorlinea, circle,minimum size=1.5em, right of=NODO1, node distance= \xdistancia,\ancholinea, fill=\colorfondo,
+       drop shadow={opacity=\sombra}] (#2) {};
+\node [thin, cross out, minimum size=1.0em, right of=NODO1, node distance= \xdistancia, draw=gray!50] {};	
+\node [left of = #2, node distance = 0.45em] () { \color{\colortexto}\tiny{$+$}};
+\node [right of = #2, node distance = 0.45em] () { \color{\colortexto}\tiny{$-$}};
+\draw [\barrowstyle, \colorlinea,\blinkstyle] (NODO1) -- (#2);	
+\node  at (#2) [minimum size=1.5em] (NODO1) {};
+}
+
 \newcommand{\bFeedBack}[2]{		
-\node [draw=\colorlinea, rectangle, below left of = NODO1, node distance =  \ydistancia, minimum height = \minaltura,\ancholinea,
+\node [draw=\colorlinea, rectangle, below left of = NODO1, node distance =\ydistancia,minimum height = \minaltura,\ancholinea,
      fill=\colorfondo,drop shadow={opacity=\sombra}, anchor = west] (NODOG) {\color{\colortexto}\tamano{#1}};	
+\draw [\barrowstyle, \colorlinea,\blinkstyle] (NODO1) -- +(0.5,0) |- (NODOG);
+\draw [\barrowstyle, \colorlinea,\blinkstyle] (NODOG) -| (#2);   %  	
+}
+
+\newcommand{\bFeedBackvhv}[2]{		
+\node [draw=\colorlinea, rectangle, below left of = NODO1, node distance =  \ydistancia,
+minimum height = \minaltura,\ancholinea, fill=\colorfondo,
+drop shadow={opacity=\sombra}, anchor = west] (NODOG) {\color{\colortexto}\tamano{#1}};	
+\draw [\barrowstyle, \colorlinea,\blinkstyle] (NODO1) |- (NODOG);
+\draw [\barrowstyle, \colorlinea,\blinkstyle] (NODOG) -| (#2);     	
+}
+
+\newcommand{\bFeedBackA}[2]{		
+\node [draw=\colorlinea,rectangle,above left of = NODO1,node distance =\ydistancia and \xdistancia,
+ minimum height = \minaltura,\ancholinea,fill=\colorfondo,
+ drop shadow={opacity=\sombra}, anchor = west] (NODOG) {\color{\colortexto}\tamano{#1}};	
 \draw [\barrowstyle, \colorlinea,\blinkstyle] (NODO1) -- +(0.5,0) |- (NODOG);
 \draw [\barrowstyle, \colorlinea,\blinkstyle] (NODOG) -| (#2);     	
 }
 
-\newcommand{\bFeedBackvhv}[2]{		
-\node [draw=\colorlinea, rectangle, below left of = NODO1, node distance =  \ydistancia, minimum height = \minaltura,\ancholinea,
-     fill=\colorfondo,drop shadow={opacity=\sombra}, anchor = west] (NODOG) {\color{\colortexto}\tamano{#1}};	
-\draw [\barrowstyle, \colorlinea,\blinkstyle] (NODO1.south) |- (NODOG);
+\newcommand{\bFeedBackAvhv}[2]{		
+\node [draw=\colorlinea,rectangle,above left of = NODO1,node distance =\ydistancia and \xdistancia,
+ minimum height = \minaltura,\ancholinea,fill=\colorfondo,
+ drop shadow={opacity=\sombra}, anchor = west] (NODOG) {\color{\colortexto}\tamano{#1}};	
+\draw [\barrowstyle, \colorlinea,\blinkstyle] (NODO1) |- (NODOG);
 \draw [\barrowstyle, \colorlinea,\blinkstyle] (NODOG) -| (#2);     	
 }
+
+
 
 \newcommand{\bCrossGain}[3]{		
 \node [draw=\colorlinea, rectangle, above right of = #2, minimum height = \minaltura,\ancholinea,
