@@ -1,6 +1,7 @@
 \documentclass[a4paper,onecolumn]{IEEETran}
 \usepackage{bloques}
 \usepackage{verbatim}
+\usepackage{enumerate}
 \oddsidemargin=-1.5cm
 
 
@@ -25,47 +26,146 @@ The package is very efficient for sequential blocks as follow:
 
 \begin{itemize}
 \item \verb|\bStart{TEXT}| a start node without box
-\item \verb|\bPlusDown{TEXT}| a plus mixer with a down input(TEXT) 
-\item \verb|\bPlusUp{TEXT}|   a plus mixer with a up input(TEXT) 
-\item \verb|\bMinusDown{TEXT}| a minus mixer with a down input(TEXT) 
-\item \verb|\bMinusUp{TEXT}| a minus mixer with a up input(TEXT) 
-\item \verb|\bEnd{TEXT}| a start node without box
 \item \verb|\bGain[mark]{TEXT}| a gain with box and a input mark before it
+\item \verb|\bEnd{TEXT}| a start node without box
 \item \verb|\bGainPlus{TEXT1}{TEXT2}| a gain(TEXT2) and plus mixer with input (TEXT1)
 \item \verb|\bGainMinus{TEXT1}{TEXT2}| a gain(TEXT2) and minus mixer with input (TEXT1)
-\item \verb|\bPlus{NODENAME}| a plus mixer with name (NODENAME) for feed forward
-\item \verb|\bInter{TEXT}| a inter node with text (TEXT1) for feed forward
-\item \verb|\bMarkNodeInter{NODENAME}| a inter node with name (NODENAME)  for feed forward
-\item \verb|\bFeedForward{TEXT}{NODE1}{NODE2}| a feed forward with gain (TEXT) from node (NODE1) to node (NODE2)
+\item \verb|\bPlus[mark]{NODENAME}| a plus mixer with name (NODENAME) and a input mark before it for feed forward
+\item \verb|\bMinus[mark]{NODENAME}| a plus mixer with name (NODENAME) and a input mark before it for feed forward
+\item \verb|\bPlusDown{TEXT}| a plus mixer with a down input(TEXT)
+\item \verb|\bPlusUp{TEXT}|   a plus mixer with a up input(TEXT)
+\item \verb|\bMinusDown{TEXT}| a minus mixer with a down input(TEXT)
+\item \verb|\bMinusUp{TEXT}| a minus mixer with a up input(TEXT)
 \end{itemize}
 
-For Feedback controls, it is required to mark the nodes with the following functions:
+IF want to start a new sequential blocks use these command:
 
 \begin{itemize}
-\item \verb|\bMinusF{NODENAME}| a minus mixer with name (NODENAME)  for feed backward
-\item \verb|\bPlusF{NODENAME}| a plus mixer with name (NODENAME)  for feed backward
-\item \verb|\bFeedBack{TEXT}{NODENAME}| a feed backward with gain(TEXT) to a mixer with name (NODENAME)
-\item \verb|\bCrossGain{TEXT}{NODENAME1}{NODENAME2}| a cross gain with gain(TEXT) from node (NODENAME1) to node (NODENAME2)
 \item \verb|\bNewStart{TEXT}{POSITION}| a new start node with text(TEXT) at (POSITION)
 \item \verb|\bMarkNode{NODENAME}| add a mark node with name {NODENAME} for the previous node
 \item \verb|\bMarkNodeUp{NODENAME}| add a mark node with name {NODENAME} above ydistance of the previous node
 \item \verb|\bMarkNodeDown{NODENAME}| add a mark node with name {NODENAME} below ydistance of the previous node
+\item \verb|\bInter{TEXT}| a no sep-space inter node with text (TEXT1) for feed forward
+\item \verb|\bMarkNodeInter{NODENAME}| a no sep-space inter node with name (NODENAME)  for feed forward
+\item \verb|\bNewInter{TEXT}{POSITION}| a new inter node with text(TEXT) at (POSITION) like new start node but with no sep-space
+\item \verb|\bFeedForward{TEXT}{NODE1}{NODE2}| a feed forward with gain (TEXT) from node (NODE1) to node (NODE2)
+\item \verb|\bCrossGain{TEXT}{NODENAME1}{NODENAME2}| a cross gain with gain(TEXT) from node (NODENAME1) to node (NODENAME2)
+\item \verb|\bLink{NODENAME1}{NODENAME2}| a Line link from node (NODENAME1) to node (NODENAME2)
+\item \verb|\bLinkhv{NODENAME1}{NODENAME2}| a H-V Line link from node (NODENAME1) to node (NODENAME2)
+\item \verb|\bLinkvh{NODENAME1}{NODENAME2}| a V-H Line link from node (NODENAME1) to node (NODENAME2)
+\end{itemize}
+
+
+
+For Feedback controls, it is required to mark the nodes with the following functions:
+
+\begin{itemize}
+\item \verb|\bMinusF[mark]{NODENAME}| a minus mixer with name (NODENAME)  for feed backward and a input mark before it
+\item \verb|\bPlusF[mark]{NODENAME}| a plus mixer with name (NODENAME)  for feed backward and a input mark before it
+\item \verb|\bFeedBack{TEXT}{NODENAME}| a feed backward with gain(TEXT) to a mixer with name (NODENAME)
+\item \verb|\bFeedBackvhv{TEXT}{NODENAME}| a feed backward with gain(TEXT) to a mixer with name (NODENAME) and link line start from the south anchor of the previous node
 \end{itemize}
 
 
 To change colors and distances, the following functions are available
 
 \begin{verbatim}
-	\bShadow{NUMBER}  	% default = 0，shadow of node
-	\bColorB{COLOR}   	% default = white，back color of node
-	\bColorT{COLOR}		% default = black，text color of node
-	\ydistance{NUMBER}	% default = 1.2 cm，offset distance of y direction
+    \bShadow{NUMBER}  	% default = 0，shadow of node
+    \bColorB{COLOR}   	% default = white, back color of node
+    \bColorT{COLOR}		% default = black, text color of node
+    \bLineL{Linestyle}  % default is none, more styles like dashed,double can be set
+    \bArrow{Arrowstyle} % default is latex, more styles like stealth,Latex,Stealth can be set
+    \ydistance{Length}	% default = 1.2 cm, offset distance of y direction
+    \restoreydis    % recover to default of the offset distance of y direction
+    \xdistance{Length}	% default = 1.5 cm, offset distance of x direction
+    \restorexdis 	% recover to default of the offset distance of x direction
 \end{verbatim}
 
 
 \newpage
 
 \section{examples}
+
+%a state observer of a system
+\begin{figure}[!htbp]
+\scalebox{1.0}{\begin{tikzpicture}
+        \bLineL{double}
+        \bArrow{-Latex[open]}
+        \bColorB{blue!70!green!20}
+        \bStart{$u$}
+        \bInter{}
+        \bMarkNodeInter{NODEU}
+        \bGain{$B$}
+        \bMinusF{NODEX}
+        \bGain[$\dot{x}$]{$\int$}
+        \bFeedBack{A}{NODEX}
+        \bGain[$x$]{$C$}
+        \bInter{}
+        \bMarkNodeInter{NODEy}
+        \bEnd{$y$}
+        %observer
+        \bNewInter{}{(\xdistancia,-2)}
+        \bMarkNodeInter{NODEua}
+        \bGain{$B$}
+        \xdistance{1cm}
+        \bMinusF{NODEXa}
+        \bMinusF{NODEXb}
+        \bGain[$\dot{\hat{x}}$]{$\int$}
+        \bFeedBack{A}{NODEXb}
+        \restorexdis
+        \bGain[$\hat{x}$]{$C$}
+        \bMinus{NODEyb}
+        \ydistance{2.5cm}
+        \bFeedBackvhv{G}{NODEXa}
+        \bLink{NODEU}{NODEua}
+        \bLinkhv{NODEy}{NODEyb}
+    \end{tikzpicture}}
+    \caption{a state observer of a system}
+\end{figure}
+
+
+
+%add example 2021-12-28
+%A system state variables diagram
+\begin{figure}[h!]
+\hspace{-0.5cm}
+	\begin{tikzpicture}
+        \bColorB{blue!70!green!20}
+        \bStart{$u$}
+        \bInter{}
+        \bMarkNodeInter{NODEU}
+        \bGain{$B$}
+        \bMinusF{NODEX}
+        \bGain[$\dot{x}$]{$\int$}
+        \bFeedBack{A}{NODEX}
+        \bGain[$x$]{$C$}
+        \bPlus{NODEY}
+        \bFeedForward{$D$}{NODEU}{NODEY}
+        \bEnd{$y$}
+		\node[right of = NODO1, text width=8cm, node distance = 4.3cm, drop shadow={opacity=1}, fill=blue!20, rounded corners] (C4)
+	{
+	\begin{verbatim}
+    \begin{figure}
+    	\begin{tikzpicture}
+            \bColorB{blue!70!green!20}
+            \bStart{$u$}
+            \bInter{}
+            \bMarkNodeInter{NODEU}
+            \bGain{$B$}
+            \bMinusF{NODEX}
+            \bGain[$\dot{x}$]{$\int$}
+            \bFeedBack{A}{NODEX}
+            \bGain[$x$]{$C$}
+            \bPlus{NODEY}
+            \bFeedForward{$D$}{NODEU}{NODEY}
+            \bEnd{$y$}
+    	\end{tikzpicture}
+    \end{figure}
+	\end{verbatim}
+	};
+	\end{tikzpicture}
+	\caption{A system state variables diagram}
+\end{figure}
 
 
 %Simple Control diagram
@@ -288,47 +388,6 @@ To change colors and distances, the following functions are available
 
 
 
-%add example 2021-12-28
-%A system state variables diagram
-\begin{figure}[h!]
-\hspace{-0.5cm}
-	\begin{tikzpicture}
-        \bColorB{blue!70!green!20}
-        \bStart{$u$}
-        \bInter{}
-        \bMarkNodeInter{NODEU}
-        \bGain{$B$}
-        \bMinusF{NODEX}
-        \bGain[$\dot{x}$]{$\int$}
-        \bFeedBack{A}{NODEX}
-        \bGain[$x$]{$C$}
-        \bPlus{NODEY}
-        \bFeedForward{$D$}{NODEU}{NODEY}
-        \bEnd{$y$}
-		\node[right of = NODO1, text width=8cm, node distance = 4.3cm, drop shadow={opacity=1}, fill=blue!20, rounded corners] (C4)
-	{
-	\begin{verbatim}
-    \begin{figure}
-    	\begin{tikzpicture}
-            \bColorB{blue!70!green!20}
-            \bStart{$u$}
-            \bInter{}
-            \bMarkNodeInter{NODEU}
-            \bGain{$B$}
-            \bMinusF{NODEX}
-            \bGain[$\dot{x}$]{$\int$}
-            \bFeedBack{A}{NODEX}
-            \bGain[$x$]{$C$}
-            \bPlus{NODEY}
-            \bFeedForward{$D$}{NODEU}{NODEY}
-            \bEnd{$y$}
-    	\end{tikzpicture}
-    \end{figure}
-	\end{verbatim}
-	};
-	\end{tikzpicture}
-	\caption{A system state variables diagram}
-\end{figure}
 
 
 \clearpage
