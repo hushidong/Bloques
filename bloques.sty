@@ -64,6 +64,16 @@
 \node  at (SUMA) [anchor = west] (NODO1) {};	
 }
 
+\newcommand{\bMultiplyDown}[1]{
+\node [draw=\colorlinea, circle,minimum size=1.5em, right of=NODO1, node distance= \xdistancia,\ancholinea, fill=\colorfondo,
+       drop shadow={opacity=\sombra}] (SUMA) {};
+\node [draw=gray!50, cross out, minimum size=1.0em, right of=NODO1, node distance= \xdistancia, thin] {};	
+\draw [\barrowstyle,\colorlinea,\blinkstyle] (NODO1) -- (SUMA);	
+\node [below of = SUMA, node distance =  \ydistancia] (VARIABLE) {\tamano{#1}};
+\draw [\barrowstyle, \colorlinea,\blinkstyle] (VARIABLE) -- (SUMA);			
+\node  at (SUMA) [anchor = west] (NODO1) {};	
+}
+
 
 \newcommand{\bPlusUp}[1]{
 \node [draw=\colorlinea, circle,minimum size=1.5em, right of=NODO1, node distance= \xdistancia,

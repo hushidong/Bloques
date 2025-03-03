@@ -1,4 +1,5 @@
 \documentclass[a4paper,onecolumn]{IEEETran}
+\usepackage{url}
 \usepackage{bloques}
 \usepackage{verbatim}
 \usepackage{enumerate}
@@ -6,7 +7,9 @@
 
 
 \title{The Bloques Package}
-\author{Alejandro Garces Ruiz \\ alejandrogarces@gmail.com}
+\author{Alejandro Garces Ruiz \\ alejandrogarces@gmail.com
+\footnote{Updated by Hu Zhenzhen hzzmail@163.com,
+url: \url{https://github.com/hushidong/Bloques}}}
 
 \begin{document}
 
@@ -40,6 +43,7 @@ The package is very efficient for sequential blocks as follow:
 \item \verb|\bPlusUp{TEXT}|   a plus mixer with a up input(TEXT)
 \item \verb|\bMinusDown{TEXT}| a minus mixer with a down input(TEXT)
 \item \verb|\bMinusUp{TEXT}| a minus mixer with a up input(TEXT)
+\item \verb|\bMultiplyDown{TEXT}| a multiply mixer with a down input(TEXT)
 \end{itemize}
 
 IF want to start a new sequential blocks use these command:
@@ -442,6 +446,8 @@ To change colors and distances, the following functions are available
 \section{history}
 
 \begin{itemize}
+  \item  add bMultiplyDown on 2025-03-03, by hu zhenzhen
+
   \item  update on 2021-12-28, by hu zhenzhen (hzzmail@163.com)
     \begin{itemize}
     \item add new some commands for feed forward drawing

@@ -1,18 +1,30 @@
+update 2025-03-03 to v1.1
+
 bloques.sty
 
 A package based on tikz for control diagrams in power electronics.
+
+    
+updated 2025-03-03 to v1.1 by hu zhenzhen
+
+    * add a mixer bMultiplyDown
+
+updated 2021-12-28 by hu zhenzhen (hzzmail@163.com)
+       
+    * add more commands for feed and branch drawing
+    * add more config api for linestyle,arrow style, xdis,ydis
+    * add more instructions of cmds in the doc
        
 version 1.0
        
 author:  Alejandro Garces(alejandrogarces@gmail.com)
   
-updated 2021-12-28 by hu zhenzhen (hzzmail@163.com)
-       
-    * add more commands for feed and branch drawing
-	* add more config api for linestyle,arrow style, xdis,ydis
-    * add more instructions of cmds in the doc
+
+
  
  package address：https://www.ctan.org/pkg/bloques
+ 
+ issue address: https://github.com/hushidong/Bloques
   
  License: LPPL
  This work may be distributed and/or modified under the  conditions of the LaTeX Project Public License, either version 1.3
